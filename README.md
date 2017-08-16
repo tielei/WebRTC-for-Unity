@@ -5,7 +5,7 @@ This repo aims to facilitate WebRTC development in Unity, and maybe have a unife
 ## Current state:
 Only for android.
 
-The context needs to be an **GLES2** for now. Which means, in player settings, Auto Graphics API needs to be unchecked, and only the OpenGLES2 option is selected. This is due to the implementation of the EGL context on webrtc. I have submitted an issue to the webrtc repo, and proposed an fix.
+The context needs to be an **GLES2** for now. Which means, in player settings, Auto Graphics API needs to be unchecked, and only the OpenGLES2 option is selected. This is due to the implementation of the EGL context on webrtc. I have submitted an [issue](https://bugs.chromium.org/p/webrtc/issues/detail?id=8094) to the webrtc repo, and proposed an fix.
 
 The image is grabed through an external texture, Blit to a RenderTexture with a shader for external textures (similar to the VideoDecodeAndroid shader), and applied to the material.
 
