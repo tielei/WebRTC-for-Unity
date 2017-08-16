@@ -19,17 +19,13 @@ import java.lang.reflect.Field;
 public class WebRTC  {
     private static final String TAG = WebRTC.class.getSimpleName();
 
-    public static final boolean HW_ACCELERATE = true;
+    static final boolean HW_ACCELERATE = true;
 
-    private static Activity _mainActivity;
-    public static Activity getMainActivity() {
+    private static Activity getMainActivity() {
         try {
-            if (_mainActivity == null) {
-                Class<?> unityPlayerClass = Class.forName("com.unity3d.player.UnityPlayer");
-                Field currentActivityField = unityPlayerClass.getDeclaredField("currentActivity");
-                _mainActivity = (Activity) currentActivityField.get(null);
-            }
-            return _mainActivity;
+            Class<?> unityPlayerClass = Class.forName("com.unity3d.player.UnityPlayer");
+            Field currentActivityField = unityPlayerClass.getDeclaredField("currentActivity");
+            return (Activity) currentActivityField.get(null);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -37,11 +33,11 @@ public class WebRTC  {
     }
 
     public static void StartScreenCapture(VideoCallback callback) {
-        ScreenCapture.getInstance().StartScreenCapture(getMainActivity(), callback);
+        VideoCapture.getInstance().StartScreenCapture(getMainActivity(), callback);
     }
 
     public static void StartCameraCapture(boolean fontCamera, VideoCallback callback) {
-        CameraCapture.StartCameraCapture(getMainActivity(), fontCamera, callback);
+        VideoCapture.StartCameraCapture(getMainActivity(), fontCamera, callback);
     }
 
     private static Toast logToast;
