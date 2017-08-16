@@ -14,7 +14,7 @@ namespace iBicha
 		private VideoCapturer capturer;
 
 		void Start() {
-			capturer = VideoCapturer.CreateCapturer (source);
+			capturer = VideoCapturer.Create (source);
 			capturer.Callback.OnVideoCapturerStarted += OnVideoCapturerStarted;
 			capturer.Callback.OnVideoCapturerStopped += OnVideoCapturerStopped;
 			capturer.Callback.OnVideoCapturerError += OnVideoCapturerError;

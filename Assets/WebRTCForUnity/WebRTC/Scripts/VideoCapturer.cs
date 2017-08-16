@@ -14,7 +14,7 @@ namespace iBicha
 			RenderTexture
 		}
 
-		public static VideoCapturer CreateCapturer(CaptureSource source)
+		public static VideoCapturer Create(CaptureSource source)
 		{
 			VideoCapturer cap;
 			switch (source) {
