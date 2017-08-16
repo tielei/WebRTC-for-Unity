@@ -28,8 +28,11 @@ namespace iBicha
 		private int width;
 		private int height;
 
-		public VideoCallback () : base ("com.ibicha.webrtc.VideoCallback")
+		private float resolution = 1f;
+
+		public VideoCallback (float resolution = 1f) : base ("com.ibicha.webrtc.VideoCallback")
 		{
+			this.resolution = Mathf.Clamp01(resolution);
 		}
 
 		public void onVideoCapturerStarted (AndroidJavaObject videoCapturer, AndroidJavaObject videoTrack)
@@ -47,18 +50,13 @@ namespace iBicha
 		{
 
 			ThreadUtils.RunOnUpdate (() => {
-				if (!WebRTCmat.shader.isSupported) {
-					onVideoCapturerError ("Unsupported shader");
-					return;
-				}
-
 				IntPtr textureId = new IntPtr (textureName);
 				if (nativeTexture!= null || this.width != width || this.height != height) {
 					CleanUp();
 					this.width = width;
 					this.height = height;
 					nativeTexture = Texture2D.CreateExternalTexture (width, height, TextureFormat.YUY2, false, false, textureId);
-					rTexture = new RenderTexture (width, height, 0, RenderTextureFormat.ARGB32);
+					rTexture = new RenderTexture (Mathf.RoundToInt(width * resolution), Mathf.RoundToInt(height * resolution), 0, RenderTextureFormat.RGB565);
 
 					Action<Texture> OnTextureHandler = OnTexture;
 					if (OnTextureHandler != null) {
@@ -69,8 +67,7 @@ namespace iBicha
 					nativeTexture.UpdateExternalTexture (textureId);
 				}
 
-				Graphics.Blit (nativeTexture, rTexture, WebRTCmat);
-
+				Graphics.Blit (nativeTexture, rTexture, WebRTCmat, 0);
 				WebRTCAndroid.KillFrame (i420Frame);
 			});
 		}

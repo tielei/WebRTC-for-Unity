@@ -1,43 +1,56 @@
 ﻿Shader "WebRTC/VideoShader"
 {
-	Properties
-	{
-		_MainTex ("Texture", 2D) = "white" {}
-	}
-
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" }
-		LOD 100
-
          Pass 
          {
-             GLSLPROGRAM       
- 
-             #ifdef VERTEX
-             varying vec2 TextureCoordinate;
-             void main()
-             {
-                 gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-                 TextureCoordinate = gl_MultiTexCoord0.xy;
-                 TextureCoordinate.y = 1.0 - TextureCoordinate.y;
-             }
-             #endif
-            
-             #ifdef FRAGMENT
-             #extension GL_OES_EGL_image_external : require
-             varying vec2 TextureCoordinate;
-             uniform samplerExternalOES _MainTex; // replaced above line with this in order to use GL_OES_EGL_image_external
-            
-             void main()
-             {
-                 gl_FragColor = texture2D(_MainTex, TextureCoordinate);
-             }
-             #endif
- 
-             ENDGLSL
+ 			Name "FlipV_OESExternal_To_RGBA"
+			ZTest Always Cull Off ZWrite Off Blend Off
+
+			GLSLPROGRAM       
+
+			#extension GL_OES_EGL_image_external : require
+			#pragma glsl_es2
+
+			#ifdef VERTEX
+
+			varying vec2 textureCoord;
+
+			void main()
+			{
+				gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+				textureCoord = vec2(gl_MultiTexCoord0.x, 1.0 - gl_MultiTexCoord0.y);
+			}
+
+			#endif
+
+			#ifdef FRAGMENT
+
+			vec4 AdjustForColorSpace(vec4 color)
+			{
+			#ifdef UNITY_COLORSPACE_GAMMA
+				return color;
+			#else
+				// Approximate version from http://chilliant.blogspot.com.au/2012/08/srgb-approximations-for-hlsl.html?m=1
+				vec3 sRGB = color.rgb;
+				return vec4(sRGB * (sRGB * (sRGB * 0.305306011 + 0.682171111) + 0.012522878), color.a);
+			#endif
+			}
+
+			varying vec2 textureCoord;
+			uniform samplerExternalOES _MainTex;
+
+			void main()
+			{
+				gl_FragColor = AdjustForColorSpace(textureExternal(_MainTex, textureCoord));
+			}
+
+			#endif
+
+			ENDGLSL
          }
 	}
 
-	FallBack "Unlit/Texture"
+	FallBack Off
 }
+ 
