@@ -1,18 +1,17 @@
-# WebRTC-for-Unity (WIP, NOT WORKING)
-WebRTC for Unity (WIP, NOT WORKING)
+# WebRTC-for-Unity (WIP, In development)
+WebRTC for Unity (WIP, In development)
 This repo aims to facilitate WebRTC development in Unity, and maybe have a unifed API that behaves the same on different platforms.
 
 ## Current state:
 Only for android.
-There is some **threading problems** going on, but webrtc and unity do share the context.
 
 The context needs to be an **GLES2** for now. Which means, in player settings, Auto Graphics API needs to be unchecked, and only the OpenGLES2 option is selected. This is due to the implementation of the EGL context on webrtc. I have submitted an issue to the webrtc repo, and proposed an fix.
 
-The image is grabed through an external texture, Blit to a RenderTexture with a shader for external textures, and applied to the material.
-A little inefficient.
-Demo scene shows capture from camera, and screen share, from webrtc video capturer to unity.
+The image is grabed through an external texture, Blit to a RenderTexture with a shader for external textures (similar to the VideoDecodeAndroid shader), and applied to the material.
 
-<img src="https://dl2.pushbulletusercontent.com/lp7rl0TPp60GQbDrsomlvSpdR7fE5JZg/Screenshot_20170814-125222.png" width="400" />
+Demo scene shows capture from camera, and screen share, from webrtc video capturer to unity, rendering to multiple Game Objects.
+
+<img src="https://dl2.pushbulletusercontent.com/Xj8v2Wliajvr8PYRvIdKS2Yu7PlqT2PP/Screenshot_20170816-145027.png" width="500" />
 
 ## Roadmap:
 - [x] Create an android plugin 
