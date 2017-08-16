@@ -1,4 +1,4 @@
-﻿Shader "WebRTC/VideoShader"
+﻿Shader "Hidden/WebRTC/VideoDecodeAndroid"
 {
 	SubShader
 	{
@@ -7,7 +7,7 @@
  			Name "FlipV_OESExternal_To_RGBA"
 			ZTest Always Cull Off ZWrite Off Blend Off
 
-			GLSLPROGRAM       
+			GLSLPROGRAM
 
 			#extension GL_OES_EGL_image_external : require
 			#pragma glsl_es2
@@ -15,7 +15,6 @@
 			#ifdef VERTEX
 
 			varying vec2 textureCoord;
-
 			void main()
 			{
 				gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
@@ -39,7 +38,6 @@
 
 			varying vec2 textureCoord;
 			uniform samplerExternalOES _MainTex;
-
 			void main()
 			{
 				gl_FragColor = AdjustForColorSpace(textureExternal(_MainTex, textureCoord));

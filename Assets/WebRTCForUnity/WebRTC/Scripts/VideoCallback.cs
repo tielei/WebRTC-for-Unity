@@ -15,15 +15,19 @@ namespace iBicha
 		private Texture2D nativeTexture;
 		private RenderTexture rTexture;
 
-		private static Material _WebRTCmat;
-		private static Material WebRTCmat{
+		private static Material _videoDecodeMaterial;
+		private static Material VideoDecodeMaterial{
 			get {
-				if (_WebRTCmat == null) {
-					_WebRTCmat = Resources.Load<Material> ("WebRTCMaterial");
+				if (_videoDecodeMaterial == null) {
+					// Hidden/VideoDecodeAndroid shader simply doesn't want to vertical flip, even with texture scale and offset.
+					_videoDecodeMaterial = Resources.Load<Material> ("VideoDecodeMaterial");
+					shaderPassIndex = Mathf.Max(0, _videoDecodeMaterial.FindPass ("FlipV_OESExternal_To_RGBA"));
 				}
-				return _WebRTCmat;
+				return _videoDecodeMaterial;
 			}
 		}
+
+		private static int shaderPassIndex = 0;
 
 		private int width;
 		private int height;
@@ -67,7 +71,7 @@ namespace iBicha
 					nativeTexture.UpdateExternalTexture (textureId);
 				}
 
-				Graphics.Blit (nativeTexture, rTexture, WebRTCmat, 0);
+				Graphics.Blit (nativeTexture, rTexture, VideoDecodeMaterial, shaderPassIndex);
 				WebRTCAndroid.KillFrame (i420Frame);
 			});
 		}
