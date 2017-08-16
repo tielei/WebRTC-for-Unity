@@ -11,7 +11,7 @@ import org.webrtc.VideoTrack;
 public interface VideoCallback {
     public void onVideoCapturerStarted(VideoCapturer videoCapturer, VideoTrack videoTrack);
 
-    public void renderFrame(int width, int height, int texture, VideoRenderer.I420Frame i420Frame);
+    public void renderFrame(int width, int height, int rotation, int texture, VideoRenderer.I420Frame i420Frame);
 
     public void onVideoCapturerStopped();
 

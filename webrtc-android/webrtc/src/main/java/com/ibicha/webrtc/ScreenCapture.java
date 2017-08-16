@@ -108,9 +108,9 @@ class ScreenCapture implements ActivityResultHelper.ActivityResultListener {
                 if (i420Frame.yuvFrame) {
                     throw new UnsupportedOperationException("Only texture frames.");
                 }
-                Log.d(TAG, "renderFrame: texture:" + i420Frame.textureId + " size:" + i420Frame.width + "x" + i420Frame.height +
+                Log.d(TAG, "renderFrame: texture:" + i420Frame.textureId + " size:" + i420Frame.rotatedWidth() + "x" + i420Frame.rotatedHeight() +
                         " rotation:" + i420Frame.rotationDegree);
-                callback.renderFrame(i420Frame.rotatedWidth(), i420Frame.rotatedHeight(), i420Frame.textureId, i420Frame);
+                callback.renderFrame(i420Frame.rotatedWidth(), i420Frame.rotatedHeight(), i420Frame.rotationDegree, i420Frame.textureId, i420Frame);
 
             }
         }));
