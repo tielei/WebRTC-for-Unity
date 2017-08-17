@@ -20,6 +20,17 @@ public class WebrtcBuild : EditorWindow {
 		{
 			GradleBuild ();
 		}
+		EditorGUILayout.PrefixLabel ("SocketIO");
+		EditorGUILayout.BeginHorizontal ();
+		if (GUILayout.Button("Run example server", GUILayout.MinWidth(110)))
+		{
+			RunSocketIOServer ();
+		}
+		if (GUILayout.Button("npm install", GUILayout.Width(100)))
+		{
+			InstallServerDependencies ();
+		}
+		EditorGUILayout.EndHorizontal ();
 	}
 
 
@@ -56,6 +67,23 @@ public class WebrtcBuild : EditorWindow {
 		}
 		Debug.Log("gradle error: location " + androidLocation + " not found");
 		return false;
+	}
+
+	public static bool RunSocketIOServer() {
+		System.Diagnostics.Process node = new System.Diagnostics.Process();
+		node.StartInfo.FileName = "node";
+		node.StartInfo.Arguments = "index.js";
+		node.StartInfo.WorkingDirectory = System.IO.Path.GetFullPath("./Assets/WebRTCForUnity/Example/SocketIO/Server~");
+		return node.Start ();
+
+	}
+
+	public static bool InstallServerDependencies() {
+		System.Diagnostics.Process node = new System.Diagnostics.Process();
+		node.StartInfo.FileName = "npm";
+		node.StartInfo.Arguments = "install";
+		node.StartInfo.WorkingDirectory = System.IO.Path.GetFullPath("./Assets/WebRTCForUnity/Example/SocketIO/Server~");
+		return node.Start ();
 	}
 
 }
