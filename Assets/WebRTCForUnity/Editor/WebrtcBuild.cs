@@ -16,11 +16,15 @@ public class WebrtcBuild : EditorWindow {
 	void OnGUI()
 	{
 		EditorGUILayout.PrefixLabel ("Android");
+
 		if (GUILayout.Button("Rebuild WebRTC library", GUILayout.MinWidth(110)))
 		{
 			GradleBuild ();
 		}
+
 		EditorGUILayout.PrefixLabel ("SocketIO");
+
+		EditorGUILayout.BeginVertical ();
 		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button("Run example server", GUILayout.MinWidth(110)))
 		{
@@ -31,6 +35,12 @@ public class WebrtcBuild : EditorWindow {
 			InstallServerDependencies ();
 		}
 		EditorGUILayout.EndHorizontal ();
+		if (GUILayout.Button("Run client in browser"))
+		{
+			RunInBrowser ();
+		}
+		EditorGUILayout.EndVertical ();
+
 	}
 
 
@@ -84,6 +94,12 @@ public class WebrtcBuild : EditorWindow {
 		node.StartInfo.Arguments = "install";
 		node.StartInfo.WorkingDirectory = System.IO.Path.GetFullPath("./Assets/WebRTCForUnity/Example/SocketIO/Server~");
 		return node.Start ();
+	}
+
+	public static bool RunInBrowser() {
+		
+		System.Diagnostics.Process.Start ("http://localhost:3000/"); 
+		return true;
 	}
 
 }
