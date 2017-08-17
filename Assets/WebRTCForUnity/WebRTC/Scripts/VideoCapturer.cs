@@ -8,6 +8,7 @@ namespace iBicha
 	public class VideoCapturer {
 		public enum CaptureSource
 		{
+			None, 
 			CameraFront,
 			CameraBack,
 			Screen, 
