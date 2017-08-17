@@ -7,19 +7,6 @@ using System;
 namespace iBicha
 {
 	public abstract class WebRTC {
-		public enum VideoCodec 
-		{
-			VP8,
-			VP9,
-			H264
-		}
-
-		public enum AudioCodec
-		{
-			opus,
-			ISAC
-		}
-
 
 		private static WebRTC instance;
 		public static WebRTC Instance {
