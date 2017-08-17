@@ -12,6 +12,8 @@ import org.webrtc.EglBase;
 import org.webrtc.PeerConnectionFactory;
 import org.webrtc.VideoRenderer;
 
+import java.util.Objects;
+
 /**
  * Created by bhadriche on 8/1/2017.
  */
@@ -63,11 +65,15 @@ public class UnityEGLUtils {
 
     //This is called from the Unity main thread, so we can keep a reference to it
     public static void setUnityContext() {
+        if(!Thread.currentThread().getName().equals("UnityMain")) {
+            Log.d(TAG, "eglContextSet: wrong thread " + Thread.currentThread().getName());
+            return;
+        }
+
         unityContext = EGL14.eglGetCurrentContext();
         unityDisplay = EGL14.eglGetCurrentDisplay();
         unityDrawSurface = EGL14.eglGetCurrentSurface(EGL14.EGL_DRAW);
         unityReadSurface = EGL14.eglGetCurrentSurface(EGL14.EGL_READ);
-        Log.d(TAG, "eglContextSet: unityThread.getName() " + Thread.currentThread().getName());
 
         if (unityContext == EGL14.EGL_NO_CONTEXT) {
             Log.d(TAG, "eglContextSet: unityContext == EGL_NO_CONTEXT");
