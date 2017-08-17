@@ -25,16 +25,10 @@ public class WebrtcBuild : EditorWindow {
 		EditorGUILayout.PrefixLabel ("SocketIO");
 
 		EditorGUILayout.BeginVertical ();
-		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button("Run example server", GUILayout.MinWidth(110)))
 		{
 			RunSocketIOServer ();
 		}
-		if (GUILayout.Button("npm install", GUILayout.Width(100)))
-		{
-			InstallServerDependencies ();
-		}
-		EditorGUILayout.EndHorizontal ();
 		if (GUILayout.Button("Run client in browser"))
 		{
 			RunInBrowser ();
@@ -80,20 +74,12 @@ public class WebrtcBuild : EditorWindow {
 	}
 
 	public static bool RunSocketIOServer() {
-		System.Diagnostics.Process node = new System.Diagnostics.Process();
-		node.StartInfo.FileName = "node";
-		node.StartInfo.Arguments = "index.js";
-		node.StartInfo.WorkingDirectory = System.IO.Path.GetFullPath("./Assets/WebRTCForUnity/Example/SocketIO/Server~");
-		return node.Start ();
+		System.Diagnostics.Process npm = new System.Diagnostics.Process();
+		npm.StartInfo.FileName = "npm";
+		npm.StartInfo.Arguments = "start";
+		npm.StartInfo.WorkingDirectory = System.IO.Path.GetFullPath("./Assets/WebRTCForUnity/Example/SocketIO/Server~");
+		return npm.Start ();
 
-	}
-
-	public static bool InstallServerDependencies() {
-		System.Diagnostics.Process node = new System.Diagnostics.Process();
-		node.StartInfo.FileName = "npm";
-		node.StartInfo.Arguments = "install";
-		node.StartInfo.WorkingDirectory = System.IO.Path.GetFullPath("./Assets/WebRTCForUnity/Example/SocketIO/Server~");
-		return node.Start ();
 	}
 
 	public static bool RunInBrowser() {
