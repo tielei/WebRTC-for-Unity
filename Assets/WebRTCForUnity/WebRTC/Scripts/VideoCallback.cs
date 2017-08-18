@@ -60,7 +60,7 @@ namespace iBicha
 
 			ThreadUtils.RunOnUpdate (() => {
 				IntPtr textureId = new IntPtr (textureName);
-				if (nativeTexture!= null || this.width != width || this.height != height || this.rotation != rotation) {
+				if (nativeTexture == null || this.width != width || this.height != height || this.rotation != rotation) {
 					CleanUp();
 					this.width = width;
 					this.height = height;
