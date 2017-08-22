@@ -9,6 +9,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.ibicha.webrtc.test.OpenGLESDrawTester;
+
 import org.webrtc.Camera1Enumerator;
 import org.webrtc.CameraEnumerator;
 import org.webrtc.Logging;
@@ -140,7 +142,7 @@ public class VideoCapture implements ActivityResultHelper.ActivityResultListener
         return null;
     }
 
-    private static void createVideoTrack(Activity mainActivity, VideoCapturer videoCapturer, final VideoCallback callback, int videoWidth, int videoHeight, int videoFps) {
+    private static void createVideoTrack(final Activity mainActivity, VideoCapturer videoCapturer, final VideoCallback callback, int videoWidth, int videoHeight, int videoFps) {
         VideoSource videoSource = UnityEGLUtils.getFactory(mainActivity).createVideoSource(videoCapturer);
         videoCapturer.startCapture(videoWidth, videoHeight, videoFps);
         VideoTrack videoTrack = UnityEGLUtils.getFactory(mainActivity).createVideoTrack("ARDAMSv0", videoSource);
@@ -151,10 +153,15 @@ public class VideoCapture implements ActivityResultHelper.ActivityResultListener
                 if (i420Frame.yuvFrame) {
                     throw new UnsupportedOperationException("Only texture frames.");
                 }
-                Log.d(TAG, "renderFrame: texture:" + i420Frame.textureId + " size:" + i420Frame.rotatedWidth() + "x" + i420Frame.rotatedHeight() +
-                        " rotation:" + i420Frame.rotationDegree);
-                callback.renderFrame(i420Frame.rotatedWidth(), i420Frame.rotatedHeight(), i420Frame.rotationDegree , i420Frame.textureId, i420Frame);
+//                Log.d(TAG, "renderFrame: texture:" + i420Frame.textureId + " size:" + i420Frame.rotatedWidth() + "x" + i420Frame.rotatedHeight() +
+//                        " rotation:" + i420Frame.rotationDegree);
+//                callback.renderFrame(i420Frame.rotatedWidth(), i420Frame.rotatedHeight(), i420Frame.rotationDegree , i420Frame.textureId, i420Frame);
 
+
+                // Try to draw a triangle with OpenGL ES 2.0, to test
+                // whether it will be conflict with Unity drawing.
+                int newTextureId = OpenGLESDrawTester.getInstance().drawTriangle(mainActivity, i420Frame.rotatedWidth(),i420Frame.rotatedHeight());
+                callback.renderFrame(i420Frame.rotatedWidth(), i420Frame.rotatedHeight(), 0 , newTextureId, i420Frame);
             }
         }));
         Log.d(TAG, "onVideoCapturerStarted");

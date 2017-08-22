@@ -65,7 +65,7 @@ namespace iBicha
 					this.width = width;
 					this.height = height;
 					this.rotation = rotation;
-					nativeTexture = Texture2D.CreateExternalTexture (width, height, TextureFormat.YUY2, false, false, textureId);
+					nativeTexture = Texture2D.CreateExternalTexture (width, height, TextureFormat.RGBA32, false, false, textureId);
 					rTexture = new RenderTexture (Mathf.RoundToInt(width * resolution), Mathf.RoundToInt(height * resolution), 0, RenderTextureFormat.RGB565);
 					rTexture.dimension = UnityEngine.Rendering.TextureDimension.Tex2D;
 
